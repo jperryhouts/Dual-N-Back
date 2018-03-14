@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+
+<!--
+    Copyright 2017 Jonathan Perry-Houts
+
+    This file is part of 'Dual-N-Back Game'.
+
+    'Dual-N-Back Game' is free software: you can redistribute it and/or modify
+    it under the terms of the GNU General Public License as published by
+    the Free Software Foundation, either version 3 of the License, or
+    (at your option) any later version.
+
+    'Dual-N-Back Game' is distributed in the hope that it will be useful,
+    but WITHOUT ANY WARRANTY; without even the implied warranty of
+    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+    GNU General Public License for more details.
+
+    You should have received a copy of the GNU General Public License
+    along with 'Dual-N-Back Game'.  If not, see <http://www.gnu.org/licenses/>.
+-->
+
+<html lang='en'>
+    <head>
+        <meta charset='utf-8' />
+        <meta name="theme-color" content="#FFFFFF"/>
+        <!--<meta name='viewport' content='width=device-width, initial-scale=1, user-scalable=no' />-->
+        <link rel='stylesheet' type='text/css' href='/styles/default.css' media='screen' />
+        <link rel='manifest' href='manifest.manifest' />
+        <input type="file" id="fileinput" />
+        <!-- Piwik -->
+        <script type="text/javascript">
+          var _paq = _paq || [];
+          /* tracker methods like "setCustomDimension" should be called before "trackPageView" */
+          _paq.push(['trackPageView']);
+          _paq.push(['enableLinkTracking']);
+          (function() {
+            var u="//piwik.dual-n-back.io/";
+            _paq.push(['setTrackerUrl', u+'piwik.php']);
+            _paq.push(['setSiteId', '2']);
+            var d=document, g=d.createElement('script'), s=d.getElementsByTagName('script')[0];
+            g.type='text/javascript'; g.async=true; g.defer=true; g.src=u+'piwik.js'; s.parentNode.insertBefore(g,s);
+          })();
+        </script>
+        <!-- End Piwik Code -->
+    </head>
+    <body>
+        <div class='screen' style='opacity:1.0;background:white;text-size:12pt'>
+            <div style='width:50px;height:50px'>
+                <svg id='#back' viewBox='0 0 50 50' width=50px height=50px style='position:absolute;left:0px;top:0px'>
+                    <rect style='opacity:0.0;' width=50px height=50px x=0 y=0 />
+                    <polygon points='17,25 33,35 33,15' style='fill:black;' />
+                </svg>
+            </div>
+
+            <div style='bottom:0;left:0;'>
+
+                <div style='width:94%;padding:7px;margin:10px;position:relative'>
+                    Daily reset N=1
+                    <svg id='reset_n' viewBox='-20 -10 40 20' width=40px style='float:right'>
+                        <rect   style='opacity:0.5' width=40px height=15px x=-20 y=-7.5 rx=7 ry=7 fill=#99ccff />
+                        <circle cx=10 cy=0 r=10 fill=#226699 />
+                    </svg>
+                </div>
+
+                <div id='#download_stats' style='background:#99ccff;border-radius:5px;width:94%;margin:10px;padding:7px;position:relative' class='tappable'>
+                    <p style='margin:auto'>
+                        <img src='/img/download.svg' height=20pt style='vertical-align:middle' />
+                        Export stats
+                    </p>
+                </div>
+                <label for='#upload_stats'>
+                    <div style='background:#99ccff;border-radius:5px;width:94%;margin:10px;padding:7px;position:relative;display:block' class='tappable'>
+                        <p style='margin:auto'>
+                            <img src='/img/upload.svg' height=20pt style='vertical-align:middle' />
+                            Restore stats
+                        </p>
+                    </div>
+                </label>
+                <div style='display:none'>
+                    <input id='#upload_stats' type='file' />
+                </div>
+                <div id='#clear_storage' style='background:#99ccff;border-radius:5px;width:94%;margin:10px;padding:7px;position:relative'  class='tappable'>
+                    <p style='margin:auto'>
+                        <img src='/img/remove.svg' height=20pt style='vertical-align:middle' />
+                        Clear local storage
+                    </p>
+                </div>
+            </div>
+            <div style='position:absolute;bottom:4pt;left:4pt'>
+                version 0.9.7
+            </div>
+        </div>
+    </body>
+</html>

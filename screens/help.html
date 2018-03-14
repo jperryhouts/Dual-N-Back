@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+
+<!--
+    Copyright 2017 Jonathan Perry-Houts
+
+    This file is part of 'Dual-N-Back Game'.
+
+    'Dual-N-Back Game' is free software: you can redistribute it and/or modify
+    it under the terms of the GNU General Public License as published by
+    the Free Software Foundation, either version 3 of the License, or
+    (at your option) any later version.
+
+    'Dual-N-Back Game' is distributed in the hope that it will be useful,
+    but WITHOUT ANY WARRANTY; without even the implied warranty of
+    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+    GNU General Public License for more details.
+
+    You should have received a copy of the GNU General Public License
+    along with 'Dual-N-Back Game'.  If not, see <http://www.gnu.org/licenses/>.
+-->
+
+<html lang='en'>
+
+<head>
+    <meta charset='utf-8' />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="theme-color" content="#FFFFFF"/>
+    <link rel='stylesheet' type='text/css' href='/styles/default.css' media='screen' />
+    <link rel='manifest' href='manifest.manifest' />
+    <!-- Piwik -->
+    <script type="text/javascript">
+      var _paq = _paq || [];
+      /* tracker methods like "setCustomDimension" should be called before "trackPageView" */
+      _paq.push(['trackPageView']);
+      _paq.push(['enableLinkTracking']);
+      (function() {
+        var u="//piwik.dual-n-back.io/";
+        _paq.push(['setTrackerUrl', u+'piwik.php']);
+        _paq.push(['setSiteId', '2']);
+        var d=document, g=d.createElement('script'), s=d.getElementsByTagName('script')[0];
+        g.type='text/javascript'; g.async=true; g.defer=true; g.src=u+'piwik.js'; s.parentNode.insertBefore(g,s);
+      })();
+    </script>
+    <!-- End Piwik Code -->
+</head>
+<body>
+    <div style='padding:0 8% 0 8%; top:0;left:0;width:100%;overflow:hidden'>
+        <div style='width:100%;height:50px;'>
+            <svg id='#back' viewBox='0 0 50 50' width=50px height=50px style='position:absolute;left:0;top:0'>
+                <rect style='opacity:0.0;' width=50px height=50px x=0 y=0 />
+                <polygon points='17,25 33,35 33,15' style='fill:black;' />
+            </svg>
+        </div>
+
+        <p>
+        Based on the task originally proposed by <a href='#ref1'>[1]</a>, and adapted by
+        <a href='#ref2'>[2]</a>. Dual N-Back has been shown to improve working memory over time.
+        For more information see <a href='#ref3'>[3]</a> and <a href='#ref4'>[4]</a>.
+        </p>
+
+        <h3>Instructions</h3>
+        <p>
+        The goal of each level is to remember the state of the game exactly N timesteps ago.
+        </p>
+
+        <p>
+        The game board is a set of eight squares.
+        They will flash in a random order, at three seconds intervals.
+        When you recognize that the same square flashed exactly N steps ago, you press the
+        <img src='/img/eye.svg' height=12pt /> button.
+        </p>
+
+        <p>
+        Simultaneously, one letter is spoken at each time step.
+        When you recognize that the same letter was spoken exactly N steps ago, you press the
+        <img src='/img/speaker.svg' width=30pt /> button.
+        </p>
+
+        <div style='border: 1px solid black;border-radius:8px;padding:10pt;width:100%'>
+            <p>
+                <img src='/img/example.png' width=100% />
+            </p>
+            <div style='font-size:10pt'>
+                <div style='font-weight:bold;'>Example sequence for N=2 game.</div>
+                The player must remember the state of the game board N steps ago.
+            </div>
+        </div>
+
+        <p>
+        If you do well, N will increase on the next round.
+        If you don't do so well, N will decrease on the next round (down to N=1).
+        There are 20+N time steps in each round.
+        </p>
+
+        <h3>
+        Notes:
+        </h3>
+        <p>
+        For feature requests and bug reports please contact me at
+        <a href='mailto:support@dual-n-back.io?Subject=Dual-N-Back%20Support'>support@dual-n-back.io</a>.
+        I will do my best to respond quickly.
+        </p>
+
+        <h3>
+        Credits:
+        </h3>
+        <p>
+        Based on the work of <a href='#ref1'>[1]</a>, <a href='#ref2'>[2]</a>, and others.
+        Audio clips adapted from <a href='#ref5'>[5]</a>, most of the icons are from <a href='#ref6'>[6]</a>.
+        </p>
+
+        <p>
+        This work is Free/Open Source software. It may be modified and redistributed
+        under the terms of the GNU General Public License version 3 or higher. The source
+        code and information on contributing to development can be found on the github page,
+        <a href='https://github.com/jperryhouts/Dual-N-Back'>
+            https://github.com/jperryhouts/Dual-N-Back
+        </a>.
+        </p>
+
+        <a name="ref1">[1]</a>
+        <a href='http://jtoomim.org/brain-training/jaeggi2003-describing-dualnback.pdf'>
+        Jaeggi, S. M. et al. Does excessive memory load attenuate activation
+        in the prefrontal cortex? Load-dependent processing in single and 
+        dual tasks: functional magnetic resonance imaging study. NeuroImage
+        19, 210–225 (2003).
+        </a>
+        <br/>
+
+        <a name="ref2">[2]</a>
+        <a href='https://link.springer.com/article/10.1007/s41465-017-0044-1'>
+        Blacker, K. J., Negoita, S., Ewen, J. B. &amp; Courtney, S. M. N-back
+        Versus Complex Span Working Memory Training. J Cogn Enhanc 1–21 (2017).
+        doi:10.1007/s41465-017-0044-1</a><br/>
+
+        <a name="ref3">[3]</a>
+        <a href='https://www.npr.org/sections/health-shots/2017/10/23/558767704/in-memory-training-smackdown-one-method-dominates'>
+        https://www.npr.org/sections/health-shots/2017/10/23/558767704/in-memory-training-smackdown-one-method-dominates
+        </a><br/>
+
+        <a name="ref4">[4]</a>
+        <a href='https://en.wikipedia.org/wiki/N-back#Dual_n-back'>
+        https://en.wikipedia.org/wiki/N-back#Dual_n-back
+        </a><br/>
+
+        <a name="ref5">[5]</a>
+            <a href='http://soundbible.com/2009-A-Z-Vocalized.html'>
+            http://soundbible.com/2009-A-Z-Vocalized.html</a>
+            (Creative Commons Attribution 3.0 license)<br/>
+
+        <a name="ref6">[6]</a>
+            <a href='http://simpleicon.com/'>http://simpleicon.com/</a>
+            (Pretty much same as the CC Attribution license)<br/>
+    </div>
+</body>
+
+</html>
+

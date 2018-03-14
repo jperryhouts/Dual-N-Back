@@ -1,0 +1,93 @@
+/*
+    Copyright 2017 Jonathan Perry-Houts
+
+    This file is part of 'Dual-N-Back Game'.
+
+    'Dual-N-Back Game' is free software: you can redistribute it and/or modify
+    it under the terms of the GNU General Public License as published by
+    the Free Software Foundation, either version 3 of the License, or
+    (at your option) any later version.
+
+    'Dual-N-Back Game' is distributed in the hope that it will be useful,
+    but WITHOUT ANY WARRANTY; without even the implied warranty of
+    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+    GNU General Public License for more details.
+
+    You should have received a copy of the GNU General Public License
+    along with 'Dual-N-Back Game'.  If not, see <http://www.gnu.org/licenses/>.
+*/
+
+* {
+    box-sizing: border-box;
+}
+
+.screen {
+    position:absolute;
+    top:0;
+    left:0;
+    width:100%;
+    height:100%;
+    overflow:hidden;
+}
+
+.box {
+    width: 99;
+    height: 99;
+    fill: #99ccff;
+    transform: translate3d(0,0,0);
+    -webkit-transform: translate3d(0,0,0);
+    -webkit-backface-visibility: hidden; /* Chrome, Safari, Opera */
+    backface-visibility: hidden;
+    -webkit-animation: fade 3s linear 1;
+    animation: fade 3s linear 1;
+    -webkit-animation-play-state: paused; /* Safari 4.0 - 8.0 */
+    animation-play-state: paused;
+}
+
+/* Safari 4.0 - 8.0 */
+@-webkit-keyframes fade {
+   0% {fill: #99ccff;}
+   1% {fill: #3366cc;}
+   17% {fill: #3366cc;}
+   18% {fill: #99ccff;}
+   100% {fill: #99ccff;}
+}
+
+@keyframes fade {
+   0% {fill: #99ccff;}
+   1% {fill: #3366cc;}
+   17% {fill: #3366cc;}
+   18% {fill: #99ccff;}
+   100% {fill: #99ccff;}
+}
+
+.tappable {
+    transform: translate3d(0,0,0);
+    -webkit-transform: translate3d(0,0,0);
+    background-color: #99ccff;
+    -webkit-backface-visibility: hidden; /* Chrome, Safari, Opera */
+    backface-visibility: hidden;
+    -webkit-animation: pulse 0.3s linear 1;
+    animation: pulse 0.3s linear 1;
+    -webkit-animation-play-state: paused; /* Safari 4.0 - 8.0 */
+    animation-play-state: paused;
+}
+
+/* Safari 4.0 - 8.0 */
+@-webkit-keyframes pulse {
+   0% {background-color: #99ccff;}
+   5% {background-color: #3366cc;}
+   95% {background-color: #3366cc;}
+   100% {background-color: #99ccff;}
+}
+
+@keyframes pulse {
+   0% {background-color: #99ccff;}
+   5% {background-color: #3366cc;}
+   95% {background-color: #3366cc;}
+   100% {background-color: #99ccff;}
+}
+
+td {
+    text-align:center;
+}

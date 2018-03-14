@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+
+<!--
+    Copyright 2017 Jonathan Perry-Houts
+
+    This file is part of 'Dual-N-Back Game'.
+
+    'Dual-N-Back Game' is free software: you can redistribute it and/or modify
+    it under the terms of the GNU General Public License as published by
+    the Free Software Foundation, either version 3 of the License, or
+    (at your option) any later version.
+
+    'Dual-N-Back Game' is distributed in the hope that it will be useful,
+    but WITHOUT ANY WARRANTY; without even the implied warranty of
+    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+    GNU General Public License for more details.
+
+    You should have received a copy of the GNU General Public License
+    along with 'Dual-N-Back Game'.  If not, see <http://www.gnu.org/licenses/>.
+-->
+
+<html lang='en'>
+    <head>
+        <meta charset='utf-8' />
+        <meta name="theme-color" content="#FFFFFF"/>
+        <link rel='stylesheet' type='text/css' href='/styles/default.css' media='screen' />
+        <link rel='manifest' href='manifest.manifest' />
+        <!-- Piwik -->
+        <script type="text/javascript">
+          var _paq = _paq || [];
+          /* tracker methods like "setCustomDimension" should be called before "trackPageView" */
+          _paq.push(['trackPageView']);
+          _paq.push(['enableLinkTracking']);
+          (function() {
+            var u="//piwik.dual-n-back.io/";
+            _paq.push(['setTrackerUrl', u+'piwik.php']);
+            _paq.push(['setSiteId', '2']);
+            var d=document, g=d.createElement('script'), s=d.getElementsByTagName('script')[0];
+            g.type='text/javascript'; g.async=true; g.defer=true; g.src=u+'piwik.js'; s.parentNode.insertBefore(g,s);
+          })();
+        </script>
+        <!-- End Piwik Code -->
+    </head>
+    <body>
+        <div class='screen'>
+            <!-- Config button -->
+            <div id='#gear' style='width:50px;height:50px;position:absolute;top:0;left:0'>
+                <img src='/img/gear.svg' width=30 height=30 style='position:relative;left:10px;top:10px'/>
+            </div>
+
+            <div id='#graph' style='width:50px;height:50px;position:absolute;top:0;right:0'>
+                <img src='/img/graph.svg' width=30 height=30 style='position:relative;left:10px;top:10px'/>
+            </div>
+
+            <!--<div id='title' style='height:50px;width:100%;font-size:30px;font-family:Sans-serif;text-align:center'></div>-->
+
+            <!-- Play button on the home screen is handled as a layer above the iframe in index.html
+                    So remember to not try and put anything here in the meantime. -->
+
+            <div id='#help' style='width:50px;height:50px;position:absolute;left:0;bottom:0;margin:auto'>
+                <svg viewBox='-10 -10 20 20' width=30px height=30px style='position:absolute;left:10px;bottom:10px'>
+                    <circle cx=0px cy=0px r=10px style='fill:black;' />
+                    <text x=0 y=0 style='fill:white;font-size:15px;font-family:Sans-serif;text-anchor:middle;dominant-baseline:central'>?</text>
+                </svg>
+            </div>
+
+            <div id='msgs' style='position:absolute;bottom:4pt;right:4pt;text-align:right;'>
+            </div>
+        </div>
+    </body>
+</html>
