@@ -18,9 +18,9 @@ Simultaneously, one letter is spoken at each time step. When you recognize that 
 ## Credits:
 Based on the work of [1], [2], and others. Audio clips adapted from [5], most of the icons are from [6].
 
-[1] [Jaeggi, S. M. et al. Does excessive memory load attenuate activation in the prefrontal cortex? Load-dependent processing in single and dual tasks: functional magnetic resonance imaging study. NeuroImage 19, 210–225 (2003).](http://jtoomim.org/brain-training/jaeggi2003-describing-dualnback.pdf)
-[2] [Blacker, K. J., Negoita, S., Ewen, J. B. & Courtney, S. M. N-back Versus Complex Span Working Memory Training. J Cogn Enhanc 1–21 (2017). doi:10.1007/s41465-017-0044-1](https://link.springer.com/article/10.1007/s41465-017-0044-1)
-[3] [https://www.npr.org/sections/health-shots/2017/10/23/558767704/in-memory-training-smackdown-one-method-dominates](https://www.npr.org/sections/health-shots/2017/10/23/558767704/in-memory-training-smackdown-one-method-dominates)
-[4] [https://en.wikipedia.org/wiki/N-back#Dual_n-back](https://en.wikipedia.org/wiki/N-back#Dual_n-back)
-[5] [http://soundbible.com/2009-A-Z-Vocalized.html (Creative Commons Attribution 3.0 license)](http://soundbible.com/2009-A-Z-Vocalized.html)
+[1] [Jaeggi, S. M. et al. Does excessive memory load attenuate activation in the prefrontal cortex? Load-dependent processing in single and dual tasks: functional magnetic resonance imaging study. NeuroImage 19, 210–225 (2003).](http://jtoomim.org/brain-training/jaeggi2003-describing-dualnback.pdf)<br/>
+[2] [Blacker, K. J., Negoita, S., Ewen, J. B. & Courtney, S. M. N-back Versus Complex Span Working Memory Training. J Cogn Enhanc 1–21 (2017). doi:10.1007/s41465-017-0044-1](https://link.springer.com/article/10.1007/s41465-017-0044-1)<br/>
+[3] [https://www.npr.org/sections/health-shots/2017/10/23/558767704/in-memory-training-smackdown-one-method-dominates](https://www.npr.org/sections/health-shots/2017/10/23/558767704/in-memory-training-smackdown-one-method-dominates)<br/>
+[4] [https://en.wikipedia.org/wiki/N-back#Dual_n-back](https://en.wikipedia.org/wiki/N-back#Dual_n-back)<br/>
+[5] [http://soundbible.com/2009-A-Z-Vocalized.html (Creative Commons Attribution 3.0 license)](http://soundbible.com/2009-A-Z-Vocalized.html)<br/>
 [6] [http://simpleicon.com/ (Pretty much same as the CC Attribution license)](http://simpleicon.com/)
