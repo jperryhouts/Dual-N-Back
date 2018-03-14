@@ -1,6 +1,8 @@
 Dual-N-Back Game
 ======
 
+Play it online at [https://dual-n-back.io/](https://www.dual-n-back.io/).
+
 Based on the task originally proposed by [1], and adapted by [2]. Dual N-Back has been shown to improve working memory over time. For more information see [3] and [4].
 
 ## Instructions
@@ -10,7 +12,7 @@ The game board is a set of eight squares. They will flash in a random order, at 
 
 Simultaneously, one letter is spoken at each time step. When you recognize that the same letter was spoken exactly N steps ago, you press the   button.
 
-![Example play sequence](img/example.png?raw=true "Example play sequence")
+<img src='img/example.png?raw=true' style='width: 500px'/>
 **Example sequence for N=2 game.** The player must remember the state of the game board N steps ago. If you do well, N will increase on the next round. If you don't do so well, N will decrease on the next round (down to N=1). There are 20+N time steps in each round.
 
 ## Credits:
