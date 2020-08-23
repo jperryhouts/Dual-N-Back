@@ -50,9 +50,11 @@ if ('serviceWorker' in navigator) {
   });
 }
 
-/*! modernizr 3.5.0 (Custom Build) | MIT *
- * https://modernizr.com/download/?-passiveeventlisteners-setclasses !*/
-!function(e,n,s){function o(e,n){return typeof e===n}function a(){var e,n,s,a,t,f,l;for(var c in r)if(r.hasOwnProperty(c)){if(e=[],n=r[c],n.name&&(e.push(n.name.toLowerCase()),n.options&&n.options.aliases&&n.options.aliases.length))for(s=0;s<n.options.aliases.length;s++)e.push(n.options.aliases[s].toLowerCase());for(a=o(n.fn,"function")?n.fn():n.fn,t=0;t<e.length;t++)f=e[t],l=f.split("."),1===l.length?Modernizr[l[0]]=a:(!Modernizr[l[0]]||Modernizr[l[0]]instanceof Boolean||(Modernizr[l[0]]=new Boolean(Modernizr[l[0]])),Modernizr[l[0]][l[1]]=a),i.push((a?"":"no-")+l.join("-"))}}function t(e){var n=l.className,s=Modernizr._config.classPrefix||"";if(c&&(n=n.baseVal),Modernizr._config.enableJSClass){var o=new RegExp("(^|\\s)"+s+"no-js(\\s|$)");n=n.replace(o,"$1"+s+"js$2")}Modernizr._config.enableClasses&&(n+=" "+s+e.join(" "+s),c?l.className.baseVal=n:l.className=n)}var i=[],r=[],f={_version:"3.5.0",_config:{classPrefix:"",enableClasses:!0,enableJSClass:!0,usePrefixes:!0},_q:[],on:function(e,n){var s=this;setTimeout(function(){n(s[e])},0)},addTest:function(e,n,s){r.push({name:e,fn:n,options:s})},addAsyncTest:function(e){r.push({name:null,fn:e})}},Modernizr=function(){};Modernizr.prototype=f,Modernizr=new Modernizr,Modernizr.addTest("passiveeventlisteners",function(){var n=!1;try{var s=Object.defineProperty({},"passive",{get:function(){n=!0}});e.addEventListener("test",null,s)}catch(o){}return n});var l=n.documentElement,c="svg"===l.nodeName.toLowerCase();a(),t(i),delete f.addTest,delete f.addAsyncTest;for(var u=0;u<Modernizr._q.length;u++)Modernizr._q[u]();e.Modernizr=Modernizr}(window,document);
+/*! modernizr 3.6.0 (Custom Build) | MIT *
+ * https://modernizr.com/download/?-passiveeventlisteners-touchevents !*/
+!function(e,n,t){function o(e,n){return typeof e===n}function s(){var e,n,t,s,i,a,r;for(var l in f)if(f.hasOwnProperty(l)){if(e=[],n=f[l],n.name&&(e.push(n.name.toLowerCase()),n.options&&n.options.aliases&&n.options.aliases.length))for(t=0;t<n.options.aliases.length;t++)e.push(n.options.aliases[t].toLowerCase());for(s=o(n.fn,"function")?n.fn():n.fn,i=0;i<e.length;i++)a=e[i],r=a.split("."),1===r.length?Modernizr[r[0]]=s:(!Modernizr[r[0]]||Modernizr[r[0]]instanceof Boolean||(Modernizr[r[0]]=new Boolean(Modernizr[r[0]])),Modernizr[r[0]][r[1]]=s),d.push((s?"":"no-")+r.join("-"))}}function i(){return"function"!=typeof n.createElement?n.createElement(arguments[0]):p?n.createElementNS.call(n,"http://www.w3.org/2000/svg",arguments[0]):n.createElement.apply(n,arguments)}function a(){var e=n.body;return e||(e=i(p?"svg":"body"),e.fake=!0),e}function r(e,t,o,s){var r,f,l,d,u="modernizr",p=i("div"),h=a();if(parseInt(o,10))for(;o--;)l=i("div"),l.id=s?s[o]:u+(o+1),p.appendChild(l);return r=i("style"),r.type="text/css",r.id="s"+u,(h.fake?h:p).appendChild(r),h.appendChild(p),r.styleSheet?r.styleSheet.cssText=e:r.appendChild(n.createTextNode(e)),p.id=u,h.fake&&(h.style.background="",h.style.overflow="hidden",d=c.style.overflow,c.style.overflow="hidden",c.appendChild(h)),f=t(p,e),h.fake?(h.parentNode.removeChild(h),c.style.overflow=d,c.offsetHeight):p.parentNode.removeChild(p),!!f}var f=[],l={_version:"3.6.0",_config:{classPrefix:"",enableClasses:!0,enableJSClass:!0,usePrefixes:!0},_q:[],on:function(e,n){var t=this;setTimeout(function(){n(t[e])},0)},addTest:function(e,n,t){f.push({name:e,fn:n,options:t})},addAsyncTest:function(e){f.push({name:null,fn:e})}},Modernizr=function(){};Modernizr.prototype=l,Modernizr=new Modernizr;var d=[],u=l._config.usePrefixes?" -webkit- -moz- -o- -ms- ".split(" "):["",""];l._prefixes=u;var c=n.documentElement,p="svg"===c.nodeName.toLowerCase(),h=l.testStyles=r;Modernizr.addTest("touchevents",function(){var t;if("ontouchstart"in e||e.DocumentTouch&&n instanceof DocumentTouch)t=!0;else{var o=["@media (",u.join("touch-enabled),("),"heartz",")","{#modernizr{top:9px;position:absolute}}"].join("");h(o,function(e){t=9===e.offsetTop})}return t}),Modernizr.addTest("passiveeventlisteners",function(){var n=!1;try{var t=Object.defineProperty({},"passive",{get:function(){n=!0}});e.addEventListener("test",null,t)}catch(o){}return n}),s(),delete l.addTest,delete l.addAsyncTest;for(var v=0;v<Modernizr._q.length;v++)Modernizr._q[v]();e.Modernizr=Modernizr}(window,document);
+
+const clickEvnt = Modernizr.touchevents ? "touchstart" : "click";
 
 var N_plus = 20;
 var iFrequency = 3000;
@@ -119,9 +121,9 @@ function replaceEventListener(e, evt, action) {
 
 function init_home() {
     document.getElementById('#play').style.display = 'block';
-    replaceEventListener(get_screen().getElementById("#gear"), "click", function(e)  { window.history.pushState({'page':'config'}, '', '');  goto_config();});
-    replaceEventListener(get_screen().getElementById("#help"), "click", function(e)  { window.history.pushState({'page':'help'},   '', '');  goto_help();});
-    replaceEventListener(get_screen().getElementById("#graph"), "click", function(e) { window.history.pushState({'page':'stats'},  '', '');  goto_stats();});
+    replaceEventListener(get_screen().getElementById("#gear"), clickEvnt, function(e)  { window.history.pushState({'page':'config'}, '', '');  goto_config();});
+    replaceEventListener(get_screen().getElementById("#help"), clickEvnt, function(e)  { window.history.pushState({'page':'help'},   '', '');  goto_help();});
+    replaceEventListener(get_screen().getElementById("#graph"), clickEvnt, function(e) { window.history.pushState({'page':'stats'},  '', '');  goto_stats();});
     document.getElementById("title").innerHTML = 'N = '+N;
     document.getElementById("ngames").innerHTML = get_n_games() + ' / 20 Today';
     get_screen().getElementById("msgs").innerHTML = sw_msgs;
@@ -148,7 +150,7 @@ function goto_help() {
     document.getElementById('#play').style.display = 'none';
     document.getElementById('thescreen').contentWindow.location.replace('/screens/help.html');
     document.getElementById('thescreen').onload = function (e) {
-        replaceEventListener(get_screen().getElementById("#back"), "click", function(e) { window.history.back(); });
+        replaceEventListener(get_screen().getElementById("#back"), clickEvnt, function(e) { window.history.back(); });
     }
 }
 
@@ -158,9 +160,9 @@ function goto_game(callback) {
     document.getElementById('thescreen').contentWindow.location.replace('/screens/game.html');
     document.getElementById('thescreen').onload = function (e) {
         get_screen().getElementById("title").innerHTML = 'N = '+N;
-        replaceEventListener(get_screen().getElementById("vis_button"), "click", function(e) {  vis_click();});
-        replaceEventListener(get_screen().getElementById("letter_button"), "click", function(e) { letter_click();});
-        replaceEventListener(get_screen().getElementById("#back"), "click", function(e) {
+        replaceEventListener(get_screen().getElementById("vis_button"), clickEvnt, function(e) {  vis_click();});
+        replaceEventListener(get_screen().getElementById("letter_button"), clickEvnt, function(e) { letter_click();});
+        replaceEventListener(get_screen().getElementById("#back"), clickEvnt, function(e) {
             _paq.push(['trackEvent', 'Game', 'Exit', N]);
             window.history.back();
         });
@@ -174,8 +176,8 @@ function goto_score() {
     document.getElementById('#play').style.display = 'none';
     document.getElementById('thescreen').contentWindow.location.replace('/screens/score.html');
     document.getElementById('thescreen').onload = function (e) {
-        replaceEventListener(get_screen().getElementById("#back"), "click", function(e) {  window.history.back(); });
-        replaceEventListener(get_screen().getElementById("#play"), "click", function(e) {  start_game(true); });
+        replaceEventListener(get_screen().getElementById("#back"), clickEvnt, function(e) {  window.history.back(); });
+        replaceEventListener(get_screen().getElementById("#play"), clickEvnt, function(e) {  start_game(true); });
 
         get_screen().getElementById("vis_hits").innerHTML = vis_hits;
         get_screen().getElementById("vis_misses").innerHTML = vis_misses;
@@ -199,7 +201,7 @@ function goto_score() {
         get_screen().getElementById("level").innerHTML = "N = "+N;
         get_screen().getElementById("ngames").innerHTML = get_n_games() + ' / 20 Today';
 
-        get_screen().getElementById('twitter_share').setAttribute('href', 
+        get_screen().getElementById('twitter_share').setAttribute('href',
             'https://twitter.com/intent/tweet/?text='+encodeURIComponent('I made it to N='+N+'! ')+'&url='+encodeURIComponent('https://dual-n-back.io/'));
     }
 }
@@ -209,18 +211,18 @@ function goto_stats() {
     document.getElementById('#play').style.display = 'none';
     document.getElementById('thescreen').contentWindow.location.replace('/screens/stats.html');
     document.getElementById('thescreen').onload = function (e) {
-        replaceEventListener(get_screen().getElementById("#back"), "click", function(e) { window.history.back(); });
+        replaceEventListener(get_screen().getElementById("#back"), clickEvnt, function(e) { window.history.back(); });
     }
 }
 
 function goto_config() {
     document.getElementById('themenu').contentWindow.location.replace('/screens/config.html');
     document.getElementById('themenu').onload = function (e) {
-        replaceEventListener(get_menu().getElementById("#download_stats"), "click", function(e) {  download_stats();});
-        replaceEventListener(get_menu().getElementById("#clear_storage"), "click", function(e) {  clear_storage_btnclk();});
+        replaceEventListener(get_menu().getElementById("#download_stats"), clickEvnt, function(e) {  download_stats();});
+        replaceEventListener(get_menu().getElementById("#clear_storage"), clickEvnt, function(e) {  clear_storage_btnclk();});
         replaceEventListener(get_menu().getElementById("#upload_stats"), "change", function(e) {  upload_cfg(e);});
-        replaceEventListener(get_menu().getElementById("#back"), "click", function(e) {  window.history.back(); });
-        replaceEventListener(get_menu().getElementById("reset_n"), "click", function(e) {       toggle_reset_n(); });
+        replaceEventListener(get_menu().getElementById("#back"), clickEvnt, function(e) {  window.history.back(); });
+        replaceEventListener(get_menu().getElementById("reset_n"), clickEvnt, function(e) {       toggle_reset_n(); });
         set_toggle(get_menu().getElementById("reset_n"), cfg["reset_n"]);
         show_menu();
     }
