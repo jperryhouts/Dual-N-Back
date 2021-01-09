@@ -66,7 +66,7 @@
     <!-- Has to be here (rather than in home.html) because mobile browsers don't think that 'click' events on
         iframe elements count as direct interaction, which means audio will not play. -->
     <div id='#play' style='z-index:2;position:absolute;left:0;top:35%;height:30%;width:100%;display:none;'>
-        <svg viewBox='-62 -110 124 220' style='z-index:3;display:block;margin:auto;height:100%'>
+        <svg viewBox='-62 -110 124 220' style='z-index:3;display:block;margin:auto;height:100%;user-select:none;'>
             <text id='title' fill='black' text-anchor='middle' alignment-baseline='baseline' x=0 y=-75 font-size=30px font-family='sans-serif'></text>
             <g onclick='start_game(false);'>
                 <circle cx="0px" cy="0px" r="50px" stroke="black" stroke-width="12px" fill="white" />
