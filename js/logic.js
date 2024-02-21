@@ -162,6 +162,7 @@ function goto_help() {
 
 function goto_game(callback) {
     hide_menu();
+    window.addEventListener("keypress", keypress);
     document.getElementById('#play').style.display = 'none';
     document.getElementById('thescreen').contentWindow.location.replace('/screens/game.html');
     document.getElementById('thescreen').onload = function (e) {
@@ -174,6 +175,20 @@ function goto_game(callback) {
         });
 
         callback();
+    }
+}
+function keypress(e){
+    var keynum;
+    if(window.event) { // IE
+        keynum = e.keyCode;
+    } else if(e.which){ // Netscape/Firefox/Opera
+        keynum = e.which;
+    }
+    keynum = String.fromCharCode(keynum);
+    if(keynum == "a"){
+        vis_click();
+    } else if (keynum == ";"){
+        letter_click();
     }
 }
 
