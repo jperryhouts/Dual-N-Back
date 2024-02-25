@@ -125,6 +125,15 @@ function get_n_games() {
     return gamecount;
 }
 
+function gameKeypress(e) {
+    const keyChar = String.fromCharCode(e.keyCode || e.which);
+    if (keyChar === "a") {
+        vis_click();
+    } else if (keyChar === ";") {
+        letter_click();
+    }
+}
+
 function init_home() {
     document.getElementById('#play').style.display = 'block';
     replaceEventListener(get_screen().getElementById("#gear"), clickEvnt, function(e)  { window.history.pushState({'page':'config'}, '', '');  goto_config();});
@@ -162,6 +171,7 @@ function goto_help() {
 
 function goto_game(callback) {
     hide_menu();
+    window.addEventListener("keypress", gameKeypress);
     document.getElementById('#play').style.display = 'none';
     document.getElementById('thescreen').contentWindow.location.replace('/screens/game.html');
     document.getElementById('thescreen').onload = function (e) {
@@ -245,6 +255,7 @@ function show_menu() {
 function hide_menu() {
     document.getElementById('shader').style.opacity = '0';
     document.getElementById('themenu').style.width = '0';
+    window.removeEventListener("keypress", gameKeypress);
 }
 
 function toggle_reset_n() {
