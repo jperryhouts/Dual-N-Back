@@ -237,12 +237,14 @@ function goto_config() {
     document.getElementById('themenu').contentWindow.location.replace('/screens/config.html');
     document.getElementById('themenu').onload = function (e) {
         replaceEventListener(get_menu().getElementById("#download_stats"), clickEvnt,   download_stats);
-        replaceEventListener(get_menu().getElementById("#do_n_reset"), clickEvnt,       reset_n);
+        replaceEventListener(get_menu().getElementById("#level_down"), clickEvnt,       level_down);
+        replaceEventListener(get_menu().getElementById("#level_up"), clickEvnt,         level_up);
         replaceEventListener(get_menu().getElementById("#clear_storage"), clickEvnt,    clear_storage_btnclk);
         replaceEventListener(get_menu().getElementById("#upload_stats"), "change",      upload_cfg);
         replaceEventListener(get_menu().getElementById("#back"), clickEvnt,             go_back);
         replaceEventListener(get_menu().getElementById("reset_n"), clickEvnt,           toggle_reset_n);
         set_toggle(get_menu().getElementById("reset_n"), cfg["reset_n"]);
+        get_menu().getElementById("#level_num").innerText = `${N}`;
         show_menu();
     }
 }
@@ -264,9 +266,20 @@ function toggle_reset_n() {
     localStorage.setItem('config', JSON.stringify(cfg));
 }
 
-function reset_n() {
-    N = 1;
-    localStorage.setItem("N", 1);
+function set_n(new_level) {
+    N = Math.max(1, new_level);
+    localStorage.setItem("N", N);
+    get_menu().getElementById("#level_num").innerText = `${N}`;
+}
+
+function level_down() {
+    set_n(N - 1);
+    _paq.push(['trackEvent', 'Config', 'LevelDown', N]);
+}
+
+function level_up() {
+    set_n(N + 1);
+    _paq.push(['trackEvent', 'Config', 'LevelUp', N]);
 }
 
 function go_back() {

@@ -91,3 +91,33 @@
 td {
     text-align:center;
 }
+
+.square-button {
+    width: 6vw; /* Adjust the size as per your requirement */
+    height: 6vw; /* This ensures the square shape */
+    background-color: #007bff; /* Button-like blue background */
+    color: white; /* White text color */
+    display: inline-flex;
+    justify-content: center;
+    vertical-align: middle;
+    align-items: center;
+    font-weight: bold;
+    font-size: 2em; /* Adjust based on your size preference */
+    border: none; /* Remove if you prefer the button to have a border */
+    cursor: pointer; /* Changes the cursor to signify it's clickable */
+    border-radius: 5px; /* Optional: for rounded corners */
+    user-select: none; /* Prevents the user from selecting the content */
+}
+
+/* Additional styles for hover effect to make it more button-like */
+.square-button:hover {
+    background-color: #0056b3; /* Slightly darker shade on hover */
+}
+
+.inline-box {
+    display: inline-flex;
+    justify-content: center;
+    vertical-align: middle;
+    align-items: center;
+    border: none; /* Remove if you prefer the button to have a border */
+}
