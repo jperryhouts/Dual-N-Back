@@ -146,6 +146,7 @@ function get_n_games() {
 
 function gameKeypress(e) {
     const keyChar = String.fromCharCode(e.keyCode || e.which);
+    console.log(`Received keypress ${keyChar}`);
     if (keyChar === "a") {
         eyeButtonPress();
     } else if (keyChar === ";") {
