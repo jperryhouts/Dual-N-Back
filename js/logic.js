@@ -1,6 +1,7 @@
 'use strict';
 
 var sw_msgs = '';
+var _paq = [];  // Previously defined by piwik
 
 if ('serviceWorker' in navigator) {
   // Delay registration until after the page has loaded, to ensure that our
@@ -79,14 +80,32 @@ var letter_hits = 0;
 var d_prime = 0;
 var time = 0;
 
-function compare_dates(a, b) {
+const LETTERS = ["B", "C", "D", "G", "H", "K", "P", "Q", "T", "W"];
+const sprites = new Howl({
+    src: ['/audio/sprites.mp3', '/audio/sprites.wav'],
+    preload: true,
+    sprite: {
+        B: [1000, 750],
+        C: [2000, 750],
+        D: [3000, 750],
+        G: [4000, 750],
+        H: [5000, 750],
+        K: [6000, 750],
+        P: [7000, 750],
+        Q: [8000, 750],
+        T: [9000, 750],
+        W: [10000, 750],
+    }
+});
+
+function compareDates(a, b) {
     return a.getDate() === b.getDate()
         && a.getMonth() === b.getMonth()
         && a.getFullYear() === b.getFullYear();
 }
 
-function is_today(d) {
-    return compare_dates(new Date(d), new Date());
+function isToday(d) {
+    return compareDates(new Date(d), new Date());
 }
 
 function cloner(e) {
@@ -95,7 +114,7 @@ function cloner(e) {
     return newone;
 }
 
-function set_toggle(e, state) {
+function setToggleState(e, state) {
     e.getElementsByTagName('rect')[0].setAttribute('fill', (state)   ? '#99ccff' : 'grey');
     e.getElementsByTagName('circle')[0].setAttribute('fill', (state) ? '#226699' : 'grey');
     e.getElementsByTagName('circle')[0].setAttribute('cx', (state)   ? '10' : '-10');
@@ -118,7 +137,7 @@ function get_n_games() {
     let games = stats['games'];
     let gamecount = 0;
     for (let i=games.length-1; i>-1; i--) {
-        if (is_today(games[i]['time'])) {
+        if (isToday(games[i]['time'])) {
             gamecount += 1;
         } else { break; } // assumes stats array is sorted.
     }
@@ -128,9 +147,9 @@ function get_n_games() {
 function gameKeypress(e) {
     const keyChar = String.fromCharCode(e.keyCode || e.which);
     if (keyChar === "a") {
-        vis_click();
+        eyeButtonPress();
     } else if (keyChar === ";") {
-        letter_click();
+        soundButtonPress();
     }
 }
 
@@ -176,8 +195,8 @@ function goto_game(callback) {
     document.getElementById('thescreen').contentWindow.location.replace('/screens/game.html');
     document.getElementById('thescreen').onload = function (e) {
         get_screen().getElementById("title").textContent = `N = ${N}`;
-        replaceEventListener(get_screen().getElementById("vis_button"), clickEvnt, function(e) {  vis_click();});
-        replaceEventListener(get_screen().getElementById("letter_button"), clickEvnt, function(e) { letter_click();});
+        replaceEventListener(get_screen().getElementById("vis_button"), clickEvnt, function(e) {  eyeButtonPress();});
+        replaceEventListener(get_screen().getElementById("letter_button"), clickEvnt, function(e) { soundButtonPress();});
         replaceEventListener(get_screen().getElementById("#back"), clickEvnt, function(e) {
             _paq.push(['trackEvent', 'Game', 'Exit', N]);
             window.history.back();
@@ -193,7 +212,7 @@ function goto_score() {
     document.getElementById('thescreen').contentWindow.location.replace('/screens/score.html');
     document.getElementById('thescreen').onload = function (e) {
         replaceEventListener(get_screen().getElementById("#back"), clickEvnt, function(e) {  window.history.back(); });
-        replaceEventListener(get_screen().getElementById("#play"), clickEvnt, function(e) {  start_game(true); });
+        replaceEventListener(get_screen().getElementById("#play"), clickEvnt, function(e) {  startGame(true); });
 
         get_screen().getElementById("vis_hits").textContent      = ""+vis_hits;
         get_screen().getElementById("vis_misses").textContent    = ""+vis_misses;
@@ -236,14 +255,14 @@ function goto_stats() {
 function goto_config() {
     document.getElementById('themenu').contentWindow.location.replace('/screens/config.html');
     document.getElementById('themenu').onload = function (e) {
-        replaceEventListener(get_menu().getElementById("#download_stats"), clickEvnt,   download_stats);
+        replaceEventListener(get_menu().getElementById("#download_stats"), clickEvnt,   downloadStats);
         replaceEventListener(get_menu().getElementById("#level_down"), clickEvnt,       level_down);
         replaceEventListener(get_menu().getElementById("#level_up"), clickEvnt,         level_up);
-        replaceEventListener(get_menu().getElementById("#clear_storage"), clickEvnt,    clear_storage_btnclk);
-        replaceEventListener(get_menu().getElementById("#upload_stats"), "change",      upload_cfg);
+        replaceEventListener(get_menu().getElementById("#clear_storage"), clickEvnt,    clearStorageButtonClick);
+        replaceEventListener(get_menu().getElementById("#upload_stats"), "change",      uploadConfig);
         replaceEventListener(get_menu().getElementById("#back"), clickEvnt,             go_back);
         replaceEventListener(get_menu().getElementById("reset_n"), clickEvnt,           toggle_reset_n);
-        set_toggle(get_menu().getElementById("reset_n"), cfg["reset_n"]);
+        setToggleState(get_menu().getElementById("reset_n"), cfg["reset_n"]);
         get_menu().getElementById("#level_num").innerText = `${N}`;
         show_menu();
     }
@@ -262,7 +281,7 @@ function hide_menu() {
 
 function toggle_reset_n() {
     cfg["reset_n"] = !cfg["reset_n"];
-    set_toggle(get_menu().getElementById("reset_n"), cfg["reset_n"]);
+    setToggleState(get_menu().getElementById("reset_n"), cfg["reset_n"]);
     localStorage.setItem('config', JSON.stringify(cfg));
 }
 
@@ -286,7 +305,7 @@ function go_back() {
     window.history.back();
 }
 
-function download_stats() {
+function downloadStats() {
     let elm = cloner(get_menu().getElementById('#download_stats'));
     elm.style.webkitAnimationPlayState = 'running';
     elm.style.animationPlayState = 'running';
@@ -302,7 +321,7 @@ function download_stats() {
     get_screen().body.removeChild(element);
 }
 
-function upload_cfg(event) {
+function uploadConfig(event) {
     if (window.File && window.FileReader && window.FileList && window.Blob) {
         let f = event.target.files[0];
         if (f) {
@@ -321,7 +340,7 @@ function upload_cfg(event) {
     }
 }
 
-function do_clear_storage() {
+function doClearStorage() {
     try {
         localStorage.removeItem("stats");
         localStorage.removeItem('config');
@@ -331,16 +350,16 @@ function do_clear_storage() {
     N = 1;
 }
 
-function clear_storage_btnclk() {
+function clearStorageButtonClick() {
     if (confirm('Really clear all app data?')) {
         let elm = cloner(get_menu().getElementById('#clear_storage'));
         elm.style.webkitAnimationPlayState = 'running';
         elm.style.animationPlayState = 'running';
-        do_clear_storage();
+        doClearStorage();
     }
 }
 
-function set_active(box) {
+function setActiveBox(box) {
     if (box >= 0 && box < 8) {
         let elm = cloner(get_screen().getElementsByClassName('box')[box]);
         elm.style.webkitAnimationPlayState = 'running';
@@ -348,28 +367,21 @@ function set_active(box) {
     }
 }
 
-function vis_click() {
+function eyeButtonPress() {
     let delay = Date.now() - timestep_start;
     vis_delays.push(delay);
     vis_clicks.push(time-1);
     get_screen().getElementById('vis_button').style.backgroundColor = '#609f9f';
 }
 
-function letter_click() {
+function soundButtonPress() {
     let delay = Date.now() - timestep_start;
     letter_delays.push(delay);
     letter_clicks.push(time-1);
     get_screen().getElementById('letter_button').style.backgroundColor = '#609f9f';
 }
 
-function is_in(a, b) {
-    for (let i=0; i<b.length; i++)
-        if (a == b[i])
-            return true;
-    return false;
-}
-
-function update_stats() {
+function updateStats() {
     let entry = { "time": (new Date()).toJSON(), "N": N,
         "vStack": vis_stack, "vClicks": vis_clicks, "vDelays": vis_delays,
         "lStack": letter_stack, "lClicks": letter_clicks, "lDelays": letter_delays,
@@ -378,7 +390,7 @@ function update_stats() {
     localStorage.setItem("stats", JSON.stringify(stats));
 }
 
-function calc_score() {
+function calculateScore() {
     vis_wrong = 0;
     vis_misses = 0;
     letter_wrong = 0;
@@ -426,20 +438,27 @@ function calc_score() {
     }
 }
 
-function do_timestep() {
+function playLetter(idx) {
+    sprites.play(LETTERS[idx])
+}
+
+function doTimestep() {
     get_screen().getElementById('vis_button').style.backgroundColor = '#d9d9d9';
     get_screen().getElementById('letter_button').style.backgroundColor = '#d9d9d9';
     if (time < vis_stack.length) {
-        set_active(vis_stack[time]);
+        let letter_idx = letter_stack[time];
+        let box_idx = vis_stack[time];
+        console.log(`${time}: ${LETTERS[letter_idx]} / ${box_idx}`);
+
         timestep_start = Date.now();
-        snds[letter_stack[time]].currentTime = 0;
-        snds[letter_stack[time]].play();
+        setActiveBox(box_idx);
+        playLetter(letter_idx);
         time += 1;
     } else {
-        set_active(-1);
+        setActiveBox(-1);
         clearInterval(myInterval);
-        update_stats();
-        N = Math.max(1, N+calc_score());
+        updateStats();
+        N = Math.max(1, N+calculateScore());
         localStorage.setItem("N", N);
         // show score
         window.history.replaceState({'page':'score'}, '', '');
@@ -447,7 +466,7 @@ function do_timestep() {
     }
 }
 
-function build_stacks() {
+function buildGameSequence() {
     let next = -1;
 
     let visual_matches = [];
@@ -518,46 +537,16 @@ function build_stacks() {
     return [visual_stack, auditory_stack];
 }
 
-function load_snds() {
-    if (snds.length == 0) {
-        let clips = ['/audio/B', '/audio/C', '/audio/D', '/audio/G', '/audio/H',
-            '/audio/K', '/audio/P', '/audio/Q', '/audio/T', '/audio/W'];
+function startGame(isRestart) {
+    console.log(`Starting game N=${N}`);
 
-        if (document.createElement('audio').canPlayType('audio/ogg'))
-            for (let i=0; i<clips.length; i++) {
-                let clip = document.createElement('audio');
-                clip.setAttribute('src',  clips[i]+'.ogg');
-                snds.push(clip);
-            }
-        else if (document.createElement('audio').canPlayType('audio/mpeg'))
-            for (let i=0; i<clips.length; i++) {
-                let clip = document.createElement('audio');
-                clip.setAttribute('src',  clips[i]+'.mp3');
-                snds.push(clip);
-            }
-        else
-            for (let i=0; i<clips.length; i++) {
-                let clip = document.createElement('audio');
-                clip.setAttribute('src',  clips[i]+'.wav');
-                snds.push(clip);
-            }
-    }
-}
-
-function start_game(isRestart) {
     _paq.push(['trackEvent', 'Game', (isRestart ? 'Restart' : 'Start'), N]);
     if (isRestart)
         window.history.replaceState({'page':'game'}, '', '');
     else
         window.history.pushState({'page':'game'}, '', '');
 
-    //load_snds();
-    for (let i=0; i<snds.length; i++) {
-        snds[i].load();
-        snds[i].volume = 0.65;
-    }
-
-    let stacks = build_stacks(N);
+    let stacks = buildGameSequence(N);
     vis_stack = stacks[0];
     letter_stack = stacks[1];
 
@@ -568,7 +557,7 @@ function start_game(isRestart) {
     time = 0;
     goto_game(function() {
         // Start game
-        myInterval = setInterval(do_timestep, iFrequency);  // run
+        myInterval = setInterval(doTimestep, iFrequency);  // run
     });
 }
 
@@ -595,12 +584,11 @@ window.addEventListener("load", function() {
 
     if (stats['games'].length > 0) {
         let latest_game = stats['games'][stats['games'].length-1];
-        if (cfg['reset_n'] && !is_today(latest_game['time'])) {
+        if (cfg['reset_n'] && !isToday(latest_game['time'])) {
             N = 1;
         }
     }
 
     window.history.pushState({'page':'home'}, '', '');
     goto_home();
-    load_snds();
 });
