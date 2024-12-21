@@ -81,26 +81,7 @@ var d_prime = 0;
 var time = 0;
 
 const LETTERS = ["B", "C", "D", "G", "H", "K", "P", "Q", "T", "W"];
-const sprites = new Howl({
-    src: ['/audio/sprites.mp3', '/audio/sprites.wav'],
-    preload: true,
-    html5: false,
-    sprite: {
-        B: [1000, 750],
-        C: [2000, 750],
-        D: [3000, 750],
-        G: [4000, 750],
-        H: [5000, 750],
-        K: [6000, 750],
-        P: [7000, 750],
-        Q: [8000, 750],
-        T: [9000, 750],
-        W: [10000, 750],
-
-        // Played when context is initialized to prime audio engine:
-        primer: [1300, 1],
-    }
-});
+let sprites;
 
 function compareDates(a, b) {
     return a.getDate() === b.getDate()
@@ -195,11 +176,36 @@ function goto_help() {
 
 function primeAudioEngine() {
     // Play a very short sound to force browser audio engine to wake up
-    console.log("Priming audio engine.");
+    console.log("Priming audio engine...");
     return new Promise((resolve) => {
-        sprites.play("primer");
-        sprites.once("end", resolve);
-        console.log("Ready");
+        sprites = new Howl({
+            src: ['/audio/sprites.mp3', '/audio/sprites.wav'],
+            preload: true,
+            html5: false,
+            sprite: {
+                B: [1000-100, 850],
+                C: [2000-100, 850],
+                D: [3000-100, 850],
+                G: [4000-100, 850],
+                H: [5000-100, 850],
+                K: [6000-100, 850],
+                P: [7000-100, 850],
+                Q: [8000-100, 850],
+                T: [9000-100, 850],
+                W: [10000-100, 850],
+            }
+        });
+        // Mute volume, play a sound, and then un-mute
+        // to force audio engine to fully load the sprites.
+        sprites.on("load", () => {
+            Howler.volume(0.0);
+            sprites.play("B");
+            sprites.once("end", () => {
+                Howler.volume(1.0);
+                console.log("Ready");
+                resolve();
+            });
+        });
     });
 }
 
