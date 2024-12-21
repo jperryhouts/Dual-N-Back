@@ -84,6 +84,7 @@ const LETTERS = ["B", "C", "D", "G", "H", "K", "P", "Q", "T", "W"];
 const sprites = new Howl({
     src: ['/audio/sprites.mp3', '/audio/sprites.wav'],
     preload: true,
+    html5: false,
     sprite: {
         B: [1000, 750],
         C: [2000, 750],
@@ -95,6 +96,9 @@ const sprites = new Howl({
         Q: [8000, 750],
         T: [9000, 750],
         W: [10000, 750],
+
+        // Played when context is initialized to prime audio engine:
+        primer: [1300, 1],
     }
 });
 
@@ -189,6 +193,16 @@ function goto_help() {
     }
 }
 
+function primeAudioEngine() {
+    // Play a very short sound to force browser audio engine to wake up
+    console.log("Priming audio engine.");
+    return new Promise((resolve) => {
+        sprites.play("primer");
+        sprites.once("end", resolve);
+        console.log("Ready");
+    });
+}
+
 function goto_game(callback) {
     hide_menu();
     window.addEventListener("keypress", gameKeypress);
@@ -203,7 +217,8 @@ function goto_game(callback) {
             window.history.back();
         });
 
-        callback();
+        // Prime the audio engine before actually starting game play
+        primeAudioEngine().then(callback);
     }
 }
 
@@ -540,7 +555,6 @@ function buildGameSequence() {
 
 function startGame(isRestart) {
     console.log(`Starting game N=${N}`);
-
     _paq.push(['trackEvent', 'Game', (isRestart ? 'Restart' : 'Start'), N]);
     if (isRestart)
         window.history.replaceState({'page':'game'}, '', '');
