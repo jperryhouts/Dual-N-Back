@@ -176,28 +176,11 @@ function goto_help() {
 
 function primeAudioEngine() {
     // Play a very short sound to force browser audio engine to wake up
-    console.log("Priming audio engine...");
     return new Promise((resolve) => {
-        sprites = new Howl({
-            src: ['/audio/sprites.mp3', '/audio/sprites.wav'],
-            preload: true,
-            html5: false,
-            sprite: {
-                B: [1000-100, 850],
-                C: [2000-100, 850],
-                D: [3000-100, 850],
-                G: [4000-100, 850],
-                H: [5000-100, 850],
-                K: [6000-100, 850],
-                P: [7000-100, 850],
-                Q: [8000-100, 850],
-                T: [9000-100, 850],
-                W: [10000-100, 850],
-            }
-        });
-        // Mute volume, play a sound, and then un-mute
-        // to force audio engine to fully load the sprites.
-        sprites.on("load", () => {
+        if (sprites !== undefined) {
+            // Mute volume, play a sound, and then un-mute
+            // to force audio engine to fully load the sprites.
+            console.log("Priming audio engine.");
             Howler.volume(0.0);
             sprites.play("B");
             sprites.once("end", () => {
@@ -205,7 +188,38 @@ function primeAudioEngine() {
                 console.log("Ready");
                 resolve();
             });
-        });
+        } else {
+            console.log("Loading audio engine...");
+            sprites = new Howl({
+                src: ["/audio/sprites.mp3", "/audio/sprites.wav"],
+                preload: true,
+                html5: false,
+                sprite: {
+                    B: [1000-100, 850],
+                    C: [2000-100, 850],
+                    D: [3000-100, 850],
+                    G: [4000-100, 850],
+                    H: [5000-100, 850],
+                    K: [6000-100, 850],
+                    P: [7000-100, 850],
+                    Q: [8000-100, 850],
+                    T: [9000-100, 850],
+                    W: [10000-100, 850],
+                }
+            });
+            // Mute volume, play a sound, and then un-mute
+            // to force audio engine to fully load the sprites.
+            sprites.once("load", () => {
+                console.log("Priming audio engine.");
+                Howler.volume(0.0);
+                sprites.play("B");
+                sprites.once("end", () => {
+                    Howler.volume(1.0);
+                    console.log("Ready");
+                    resolve();
+                });
+            });
+        }
     });
 }
 
