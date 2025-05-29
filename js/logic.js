@@ -1,7 +1,13 @@
 'use strict';
 
 var sw_msgs = '';
-var _paq = [];  // Previously defined by piwik
+
+// This site previously used Piwik (Matomo) for local analytics (to track how
+// far folks were getting in the game, etc), but the curiosity wore off and I
+// shut down the AWS instance that hosted it. This `_paq` variable was
+// previously defined by piwik, but I'm replacing it here with a dummy variable
+// to avoid refactoring out the original tracking points.
+var _paq = [];
 
 if ('serviceWorker' in navigator) {
   // Delay registration until after the page has loaded, to ensure that our
@@ -57,12 +63,19 @@ if ('serviceWorker' in navigator) {
 
 const clickEvnt = Modernizr.touchevents ? "touchstart" : "click";
 
-var N_plus = 20;
-var iFrequency = 3000;
-var myInterval = 0;
+// The current level
 var N = 1;
+// The number of timesteps in each round will be N + this value.
+// For example, if you're playing N=4 and N_plus == 20 (default)
+// then there will be 24 timesteps in the round.
+var N_plus = 20;
+// Number of milliseconds spent on each timestep. This includes
+// the time taken up by the audio prompt saying the next letter
+var iFrequency = 3000;
+// Handle for setting and clearing the game timer
+var myInterval = 0;
+// Configuration object kept in localStorage
 var cfg;
-var snds = [];
 var stats;
 var timestep_start;
 var vis_stack = [];
@@ -80,6 +93,7 @@ var letter_hits = 0;
 var d_prime = 0;
 var time = 0;
 
+// Letter choices as defined in Jaeggi, 2003
 const LETTERS = ["B", "C", "D", "G", "H", "K", "P", "Q", "T", "W"];
 let sprites;
 
@@ -132,9 +146,18 @@ function get_n_games() {
 function gameKeypress(e) {
     const keyChar = String.fromCharCode(e.keyCode || e.which);
     console.log(`Received keypress ${keyChar}`);
-    if (keyChar === "a") {
+
+    // Blacker et al 2017 used d/f for left hand operation and j/k for right hand operation
+    // (they used them for a permuted rule operations task, but we'll adopt the same keys
+    // for the N-back task)
+    const leftKeys = new Set(['a', 'd', 'j']);
+    const rightKeys = new Set([';', 'f', 'k']);
+
+    if (leftKeys.has(keyChar)) {
+        // left side
         eyeButtonPress();
-    } else if (keyChar === ";") {
+    } else if (rightKeys.has(keyChar)) {
+        // right side
         soundButtonPress();
     }
 }
