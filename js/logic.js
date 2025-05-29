@@ -502,6 +502,19 @@ function doTimestep() {
     }
 }
 
+// Return an array of 'count' random numbers, between the range [start, stop)
+function getRandomNumbers(start, stop, count)
+{
+    var result = [];
+
+    for (let i=0; i<count; i++) {
+        var randInt = Math.floor(Math.random() * (stop - start)) + start;
+        result.push(randInt);
+    }
+
+    return result;
+}
+
 function buildGameSequence() {
     let next = -1;
 
@@ -531,19 +544,10 @@ function buildGameSequence() {
         }
     }
 
-    let visual_stack = [];
-    let auditory_stack = [];
     // Randomly assign first N rounds
-    while (visual_stack.length < N) {
-        next = Math.floor(Math.random()*(8));
-        if (visual_stack.indexOf(next) == -1)
-            visual_stack.push(next);
-    }
-    while (auditory_stack.length < N) {
-        next = Math.floor(Math.random()*(10));
-        if (auditory_stack.indexOf(next) == -1)
-            auditory_stack.push(next);
-    }
+    let visual_stack = getRandomNumbers(0, 8, N);
+    let auditory_stack = getRandomNumbers(0, 10, N);
+
     // Now add random positions to the stack until it's full.
     // Make sure that unless this is one of the selected timesteps
     // from earlier, that each position is not the same as the one
