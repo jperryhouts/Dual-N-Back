@@ -144,8 +144,9 @@ function get_n_games() {
 }
 
 function gameKeypress(e) {
-    const keyChar = String.fromCharCode(e.keyCode || e.which);
-    console.log(`Received keypress ${keyChar}`);
+    if (e.repeat) return;
+    const keyChar = e.key.toLowerCase();
+    console.log(`Received keydown ${keyChar}`);
 
     // Blacker et al 2017 used d/f for left hand operation and j/k for right hand operation
     // (they used them for a permuted rule operations task, but we'll adopt the same keys
@@ -248,10 +249,14 @@ function primeAudioEngine() {
 
 function goto_game(callback) {
     hide_menu();
-    window.addEventListener("keypress", gameKeypress);
+    window.addEventListener("keydown", gameKeypress);
     document.getElementById('#play').style.display = 'none';
     document.getElementById('thescreen').contentWindow.location.replace('/screens/game.html');
     document.getElementById('thescreen').onload = function (e) {
+        // Listen for keys in the iframe too, so that keys still work
+        // even if the user clicks inside the iframe and it takes focus
+        document.getElementById('thescreen').contentWindow.addEventListener("keydown", gameKeypress);
+
         get_screen().getElementById("title").textContent = `N = ${N}`;
         replaceEventListener(get_screen().getElementById("vis_button"), clickEvnt, function(e) {  eyeButtonPress();});
         replaceEventListener(get_screen().getElementById("letter_button"), clickEvnt, function(e) { soundButtonPress();});
@@ -335,7 +340,10 @@ function show_menu() {
 function hide_menu() {
     document.getElementById('shader').style.opacity = '0';
     document.getElementById('themenu').style.width = '0';
-    window.removeEventListener("keypress", gameKeypress);
+    window.removeEventListener("keydown", gameKeypress);
+    try {
+        document.getElementById('thescreen').contentWindow.removeEventListener("keydown", gameKeypress);
+    } catch (e) {}
 }
 
 function toggle_reset_n() {
