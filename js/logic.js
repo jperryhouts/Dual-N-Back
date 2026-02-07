@@ -1,7 +1,5 @@
 'use strict';
 
-var sw_msgs = '';
-
 // This site previously used Piwik (Matomo) for local analytics (to track how
 // far folks were getting in the game, etc), but the curiosity wore off and I
 // shut down the AWS instance that hosted it. This `_paq` variable was
@@ -10,44 +8,36 @@ var sw_msgs = '';
 var _paq = [];
 
 if ('serviceWorker' in navigator) {
-  // Delay registration until after the page has loaded, to ensure that our
-  // precaching requests don't degrade the first visit experience.
-  // See https://developers.google.com/web/fundamentals/instant-and-offline/service-worker/registration
+  function showUpdateBanner(waitingWorker) {
+    var banner = document.getElementById('sw-update-banner');
+    banner.style.display = 'block';
+    banner.onclick = function() {
+      banner.style.display = 'none';
+      waitingWorker.postMessage({type: 'SKIP_WAITING'});
+    };
+  }
+
+  // Reload the page when a new service worker takes over.
+  navigator.serviceWorker.addEventListener('controllerchange', function() {
+    window.location.reload();
+  });
+
   window.addEventListener('load', function() {
-    // Your service-worker.js *must* be located at the top-level directory relative to your site.
-    // It won't be able to control pages unless it's located at the same level or higher than them.
-    // *Don't* register service worker file in, e.g., a scripts/ sub-directory!
-    // See https://github.com/slightlyoff/ServiceWorker/issues/468
     navigator.serviceWorker.register('/sw.js').then(function(reg) {
-      // updatefound is fired if service-worker.js changes.
+      // Check for updates every hour (useful for long-lived PWA sessions).
+      setInterval(function() { reg.update(); }, 60 * 60 * 1000);
+
+      // Handle case where a new SW is already waiting (e.g. user reopened the app).
+      if (reg.waiting) {
+        showUpdateBanner(reg.waiting);
+      }
+
       reg.onupdatefound = function() {
-        // The updatefound event implies that reg.installing is set; see
-        // https://w3c.github.io/ServiceWorker/#service-worker-registration-updatefound-event
         let installingWorker = reg.installing;
 
         installingWorker.onstatechange = function() {
-          switch (installingWorker.state) {
-            case 'installed':
-              if (navigator.serviceWorker.controller) {
-                // At this point, the old content will have been purged and the fresh content will
-                // have been added to the cache.
-                // It's the perfect time to display a "New content is available; please refresh."
-                // message in the page's interface.
-                sw_msgs = 'A new version is available.<br/>Refresh the page to update.';
-              } else {
-                // At this point, everything has been precached.
-                // It's the perfect time to display a "Content is cached for offline use." message.
-                sw_msgs = 'Content is cached for offline use';
-              }
-              try {
-                get_screen().getElementById("msgs").textContent = sw_msgs;
-                sw_msgs = '';
-              } catch (e) {}
-              break;
-
-            case 'redundant':
-              console.error('The installing service worker became redundant.');
-              break;
+          if (installingWorker.state === 'installed' && navigator.serviceWorker.controller) {
+            showUpdateBanner(installingWorker);
           }
         };
       };
@@ -170,8 +160,6 @@ function init_home() {
     replaceEventListener(get_screen().getElementById("#graph"), clickEvnt, function(e) { window.history.pushState({'page':'stats'},  '', '');  goto_stats();});
     document.getElementById("title").textContent = `N = ${N}`;
     document.getElementById("ngames").textContent = `${get_n_games()} / 20 Today`;
-    get_screen().getElementById("msgs").textContent = sw_msgs;
-    sw_msgs = '';
 }
 
 function goto_home() {
