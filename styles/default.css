@@ -93,8 +93,8 @@ td {
 }
 
 .square-button {
-    width: 6vw; /* Adjust the size as per your requirement */
-    height: 6vw; /* This ensures the square shape */
+    width: 1.5em;
+    height: 1.5em;
     background-color: #007bff; /* Button-like blue background */
     color: white; /* White text color */
     display: inline-flex;
@@ -102,8 +102,7 @@ td {
     vertical-align: middle;
     align-items: center;
     font-weight: bold;
-    font-size: 2em; /* Adjust based on your size preference */
-    border: none; /* Remove if you prefer the button to have a border */
+    border: none;
     cursor: pointer; /* Changes the cursor to signify it's clickable */
     border-radius: 5px; /* Optional: for rounded corners */
     user-select: none; /* Prevents the user from selecting the content */
@@ -119,5 +118,5 @@ td {
     justify-content: center;
     vertical-align: middle;
     align-items: center;
-    border: none; /* Remove if you prefer the button to have a border */
+    border: none;
 }
