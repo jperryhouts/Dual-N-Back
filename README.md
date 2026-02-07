@@ -12,7 +12,7 @@ The game board is a set of eight squares. They will flash in a random order, at 
 
 Simultaneously, one letter is spoken at each time step. When you recognize that the same letter was spoken exactly N steps ago, you press the   button.
 
-<img src='img/example.png?raw=true' width=500px />
+<img src='app/img/example.png?raw=true' width=500px />
 **Example sequence for N=2 game.** The player must remember the state of the game board N steps ago. If you do well, N will increase on the next round. If you don't do so well, N will decrease on the next round (down to N=1). There are 20+N time steps in each round.
 
 ## Credits:
