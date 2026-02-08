@@ -16,7 +16,7 @@
     "@playwright/test": "^1.58.2",
     "serve": "^14.2.5",
     "vitest": "^4.0.18",
-    "workbox-cli": "^7.4.0"
+    "workbox-cli": "^6.6.0"
   },
   "scripts": {
     "test": "vitest run && npx playwright test",
