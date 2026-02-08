@@ -44,12 +44,10 @@ deploy: dist
 
 serve: dist
 	docker stop dual-n-back && docker rm dual-n-back || true
-	tmpdir="$$(mktemp -d)" && \
-		rsync -a "$(PWD)/dist/" "$${tmpdir}/" && \
-		docker run -dit --name dual-n-back -p 8081:80 \
-			-v "$${tmpdir}":/usr/local/apache2/htdocs/ \
-			httpd:2.4 && \
-		echo "Server started at http://localhost:8081"
+	docker run -dit --name dual-n-back -p 8081:80 \
+		-v "$(PWD)/dist":/usr/local/apache2/htdocs/ \
+		httpd:2.4
+	echo "Server started at http://localhost:8081"
 
 stop:
 	docker stop dual-n-back
