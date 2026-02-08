@@ -2,15 +2,15 @@
 
 VERSION := $(shell node -p "require('./package.json').version")
 
-js = $(shell find app -name '*.js' -not -path '*/\.*' | sed -e 's/app/dist/' )
-#html = $(shell find app -name '*.html' | sed -e 's/app/dist/' )
-css = $(shell find app -name '*.css' -not -path '*/\.*' | sed -e 's/app/dist/' )
-#others = $(shell find app -type f -not -path '*/\.*' | grep -v -e '.js$$' -e '.html$$' -e '.css$$' | sed -e 's/app/dist/' )
-others = $(shell find app -type f -not -path '*/\.*' | grep -v -e '.js$$' -e '.css$$' | sed -e 's/app/dist/' )
 allfiles = $(shell find app -type f -not -path '*/\.*' | sed -e 's/app/dist/' )
+css = $(shell find app -name '*.css' -not -path '*/\.*' | sed -e 's/app/dist/' )
 dirs = $(shell find app -type d -not -path '*/\.*' | sed -e 's/app/dist/' -e 's/$$/\//' )
+js = $(shell find app -name '*.js' -not -path '*/\.*' | sed -e 's/app/dist/' )
+others = $(shell find app -type f -not -path '*/\.*' | grep -v -e '.js$$' -e '.css$$' | sed -e 's/app/dist/' )
 
-.PHONY: deploy clean serve setup_dev stop test
+.PHONY: all clean deploy serve stop test
+
+all: dist
 
 $(dirs): dist/%: app/%
 	mkdir -p "$@"
@@ -18,19 +18,22 @@ $(dirs): dist/%: app/%
 
 $(js): dist/%: app/%
 	@make "$(dir $@)"
-	terser "$^" > "$@"
+	cp "$^" "$@"  # removed terser
 	chmod 644 "$@"
 
 $(css): dist/%: app/%
 	@make "$(dir $@)"
-	cat "$^" | cssmin > "$@"
+	cp "$^" "$@"  # removed cssmin
 	chmod 644 "$@"
 
 $(others): dist/%: app/% package.json
 	@make "$(dir $@)"
-	cp -a "`echo $@ | sed 's/dist/app/'`" "$@"
-	sed -i 's/__VERSION__/$(VERSION)/g' "$@"
+	src="$(shell echo $@ | sed -e 's/dist/app/')" ; \
+		sed 's/__VERSION__/$(VERSION)/g' "$${src}" > "$@"
 	chmod 644 "$@"
+
+clean:
+	rm -rf dist
 
 dist/sw.js: $(allfiles)
 	npx workbox generateSW workbox-config.js
@@ -53,12 +56,5 @@ stop:
 	docker stop dual-n-back
 	docker rm dual-n-back
 
-# Setup dev environment
-setup_dev:
-	npm install
-
 test:
 	npm test
-
-clean:
-	rm -rf dist/*
