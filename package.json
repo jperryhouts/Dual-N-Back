@@ -1,0 +1,23 @@
+{
+  "name": "dual-n-back",
+  "version": "0.10.5",
+  "description": "Dual-N-Back is a browser-based brain training PWA",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/jperryhouts/Dual-N-Back.git"
+  },
+  "author": "Jonathan Perry-Houts",
+  "license": "GPL-3.0-or-later",
+  "bugs": {
+    "url": "https://github.com/jperryhouts/Dual-N-Back/issues"
+  },
+  "homepage": "https://github.com/jperryhouts/Dual-N-Back#readme",
+  "devDependencies": {
+    "@playwright/test": "^1.58.2",
+    "vitest": "^4.0.18",
+    "workbox-cli": "^6.6.0"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  }
+}
