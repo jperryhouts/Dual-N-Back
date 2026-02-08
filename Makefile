@@ -33,7 +33,7 @@ $(others): dist/%: app/% package.json
 	chmod 644 "$@"
 
 dist/sw.js: $(allfiles)
-	workbox generateSW workbox-config.js
+	npx workbox generateSW workbox-config.js
 
 dist: dist/sw.js
 
