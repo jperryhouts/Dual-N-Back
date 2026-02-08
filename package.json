@@ -1,6 +1,6 @@
 {
   "name": "dual-n-back",
-  "version": "0.11.0",
+  "version": "0.11.1",
   "description": "Dual-N-Back is a browser-based brain training PWA",
   "repository": {
     "type": "git",
