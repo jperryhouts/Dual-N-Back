@@ -26,7 +26,7 @@ $(css): dist/%: app/%
 	cat "$^" | cssmin > "$@"
 	chmod 644 "$@"
 
-$(others): dist/%: app/%
+$(others): dist/%: app/% package.json
 	@make "$(dir $@)"
 	cp -a "`echo $@ | sed 's/dist/app/'`" "$@"
 	sed -i 's/__VERSION__/$(VERSION)/g' "$@"
