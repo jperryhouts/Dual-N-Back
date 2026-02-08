@@ -14,10 +14,15 @@
   "homepage": "https://github.com/jperryhouts/Dual-N-Back#readme",
   "devDependencies": {
     "@playwright/test": "^1.58.2",
+    "serve": "^14.2.5",
     "vitest": "^4.0.18",
-    "workbox-cli": "^6.6.0"
+    "workbox-cli": "^7.4.0"
   },
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "vitest run && npx playwright test",
+    "test:unit": "vitest run",
+    "test:integration": "npx playwright test",
+    "test:visual": "npx playwright test visual-regression",
+    "test:visual:update": "npx playwright test visual-regression --update-snapshots"
   }
 }

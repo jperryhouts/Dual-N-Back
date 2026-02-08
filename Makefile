@@ -8,7 +8,7 @@ others = $(shell find app -type f -not -path '*/\.*' | grep -v -e '.js$$' -e '.c
 allfiles = $(shell find app -type f -not -path '*/\.*' | sed -e 's/app/dist/' )
 dirs = $(shell find app -type d -not -path '*/\.*' | sed -e 's/app/dist/' -e 's/$$/\//' )
 
-.PHONY: deploy clean serve stop
+.PHONY: deploy clean serve setup_dev stop test
 
 $(dirs): dist/%: app/%
 	mkdir -p "$@"
@@ -30,7 +30,7 @@ $(others): dist/%: app/%
 	chmod 644 "$@"
 
 dist/sw.js: $(allfiles)
-	npx workbox-cli generateSW workbox-config.js
+	workbox generateSW workbox-config.js
 
 dist: dist/sw.js
 
@@ -51,6 +51,13 @@ serve: dist
 stop:
 	docker stop dual-n-back
 	docker rm dual-n-back
+
+# Setup dev environment
+setup_dev:
+	npm install
+
+test:
+	npm test
 
 clean:
 	rm -rf dist/*
