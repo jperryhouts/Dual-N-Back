@@ -1,5 +1,7 @@
 -include deploy.env
 
+VERSION := $(shell node -p "require('./package.json').version")
+
 js = $(shell find app -name '*.js' -not -path '*/\.*' | sed -e 's/app/dist/' )
 #html = $(shell find app -name '*.html' | sed -e 's/app/dist/' )
 css = $(shell find app -name '*.css' -not -path '*/\.*' | sed -e 's/app/dist/' )
@@ -27,6 +29,7 @@ $(css): dist/%: app/%
 $(others): dist/%: app/%
 	@make "$(dir $@)"
 	cp -a "`echo $@ | sed 's/dist/app/'`" "$@"
+	sed -i 's/__VERSION__/$(VERSION)/g' "$@"
 	chmod 644 "$@"
 
 dist/sw.js: $(allfiles)
