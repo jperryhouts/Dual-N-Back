@@ -22,6 +22,7 @@
     "test": "vitest run && npx playwright test",
     "test:unit": "vitest run",
     "test:integration": "npx playwright test",
+    "test:audio": "npx playwright test audio-playback",
     "test:visual": "npx playwright test visual-regression",
     "test:visual:update": "npx playwright test visual-regression --update-snapshots"
   }
