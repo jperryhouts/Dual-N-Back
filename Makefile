@@ -8,7 +8,7 @@ dirs = $(shell find app -type d -not -path '*/\.*' | sed -e 's/app/dist/' -e 's/
 js = $(shell find app -name '*.js' -not -path '*/\.*' | sed -e 's/app/dist/' )
 others = $(shell find app -type f -not -path '*/\.*' | grep -v -e '.js$$' -e '.css$$' | sed -e 's/app/dist/' )
 
-.PHONY: all clean deploy serve stop test
+.PHONY: all clean deploy serve serve-local stop test
 
 all: dist
 
@@ -51,6 +51,9 @@ serve: dist
 		-v "$(PWD)/dist":/usr/local/apache2/htdocs/ \
 		httpd:2.4
 	echo "Server started at http://localhost:8081"
+
+serve-local: dist
+	python3 -m http.server 8081 -d dist
 
 stop:
 	docker stop dual-n-back
