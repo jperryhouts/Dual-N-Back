@@ -534,6 +534,14 @@ function getRandomNumbers(start, stop, count)
     return result;
 }
 
+function hasThreeConsecutive(arr, val) {
+    for (let i = 0; i <= arr.length - 3; i++) {
+        if (arr[i] === val && arr[i+1] === val && arr[i+2] === val)
+            return true;
+    }
+    return false;
+}
+
 function buildGameSequence() {
     let next = -1;
 
@@ -592,6 +600,9 @@ function buildGameSequence() {
             auditory_stack.push(next);
         }
     }
+
+    if (hasThreeConsecutive(auditory_stack, 5))
+        return buildGameSequence();
 
     return [visual_stack, auditory_stack];
 }
