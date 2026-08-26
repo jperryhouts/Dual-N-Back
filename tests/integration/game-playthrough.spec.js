@@ -68,7 +68,8 @@ test.describe('Game Playthrough', () => {
 
       // Click the correct buttons for match timesteps.
       // eyeButtonPress() pushes time-1 (== t) into vis_clicks.
-      // calculateScore() checks vis_clicks.indexOf(i) for i in [N, length).
+      // calculateScore() checks vis_clicks.indexOf(i) for i in [0, length);
+      // only i >= N can be a target, earlier presses count as false alarms.
       if (visualMatches.has(t)) {
         await screenFrame.locator('#vis_button').click();
       }
@@ -90,8 +91,8 @@ test.describe('Game Playthrough', () => {
     await expect(screenFrame.locator('#letter_misses')).toHaveText('0');
     await expect(screenFrame.locator('#letter_wrong')).toHaveText('0');
 
-    // d' = hit_rate(1.0) - false_alarm_rate(0.0) = 1.0 → displayed as 100%
-    await expect(screenFrame.locator('#title')).toHaveText("d' = 100%");
+    // sensitivity = hit_rate(1.0) - false_alarm_rate(0.0) = 1.0 → displayed as 100%
+    await expect(screenFrame.locator('#title')).toHaveText('Score = 100%');
 
     // Perfect score → N increases from 1 to 2
     await expect(screenFrame.locator('#level')).toHaveText('N = 2');
@@ -124,10 +125,10 @@ test.describe('Game Playthrough', () => {
     await expect(screenFrame.locator('#letter_misses')).toHaveText('6');
     await expect(screenFrame.locator('#letter_wrong')).toHaveText('0');
 
-    // d' = 0 - 0 = 0 → displayed as 0%
-    await expect(screenFrame.locator('#title')).toHaveText("d' = 0%");
+    // sensitivity = 0 - 0 = 0 → displayed as 0%
+    await expect(screenFrame.locator('#title')).toHaveText('Score = 0%');
 
-    // d' < 0.7 would decrease N, but min is 1 so it stays at 1
+    // sensitivity < 0.7 would decrease N, but min is 1 so it stays at 1
     await expect(screenFrame.locator('#level')).toHaveText('N = 1');
   });
 });

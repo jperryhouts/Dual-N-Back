@@ -80,7 +80,18 @@ var letter_wrong = 0;
 var letter_misses = 0;
 var vis_hits = 0;
 var letter_hits = 0;
-var d_prime = 0;
+// Sensitivity score for the last completed game, in the range [-1, 1].
+//
+// This is hit_rate - false_alarm_rate (known as Pr, or "corrected recognition",
+// in the two-high-threshold model). It is deliberately NOT the d' of signal
+// detection theory, which is z(hit_rate) - z(false_alarm_rate) and is unbounded.
+// Blacker et al 2017 used true d' as their analysis measure, but adapted their
+// n-back level using plain accuracy with >85% / <70% cutoffs. The thresholds
+// below come from that accuracy rule, so they need a bounded score to work
+// against; swapping in true d' without recalibrating would promote nearly every
+// game, and z() is infinite at rates of 0 or 1 (routine here, with only 6
+// targets per channel). Jaeggi et al 2003 used accuracy and reaction time only.
+var sensitivity = 0;
 var time = 0;
 
 // Letter choices as defined in Jaeggi, 2003
@@ -273,10 +284,10 @@ function goto_score() {
         get_screen().getElementById("letter_misses").textContent = ""+letter_misses;
         get_screen().getElementById("letter_wrong").textContent  = ""+letter_wrong;
 
-        if (d_prime > 0.85) {
+        if (sensitivity > 0.85) {
             get_screen().getElementById("title").style.color = 'green';
             get_screen().getElementById("level").style.fill = 'green';
-        } else if (d_prime < 0.7) {
+        } else if (sensitivity < 0.7) {
             get_screen().getElementById("title").style.color = 'red';
             get_screen().getElementById("level").style.fill = 'red';
         } else {
@@ -284,7 +295,7 @@ function goto_score() {
             get_screen().getElementById("level").style.fill = 'black';
         }
 
-        get_screen().getElementById("title").textContent = `d' = ${Math.round(d_prime*100)}%`;
+        get_screen().getElementById("title").textContent = `Score = ${Math.round(sensitivity*100)}%`;
         get_screen().getElementById("level").textContent = `N = ${N}`;
         get_screen().getElementById("ngames").textContent = `${get_n_games()} / 20 Today`;
 
@@ -452,8 +463,19 @@ function calculateScore() {
     letter_misses = 0;
     vis_hits = 0;
     letter_hits = 0;
-    for (let i=N; i<vis_stack.length; i++) {
-        if (vis_stack[i] == vis_stack[i-N]) {
+    // Start at 0, not at N. The first N timesteps have no i-N predecessor so
+    // they can never be targets, but the buttons are live from the very first
+    // timestep and eyeButtonPress()/soundButtonPress() record a click there
+    // like any other. Blacker et al 2017 count those trials as non-targets
+    // ("6 targets and 14+n non-targets" out of 20+n stimuli), which is what
+    // the false-alarm denominator below assumes, so a press there has to be
+    // tallied as a false alarm. Scoring from i=N instead left the numerator
+    // covering 14 trials while the denominator said 14+N.
+    for (let i=0; i<vis_stack.length; i++) {
+        let vis_is_target = (i >= N) && (vis_stack[i] == vis_stack[i-N]);
+        let letter_is_target = (i >= N) && (letter_stack[i] == letter_stack[i-N]);
+
+        if (vis_is_target) {
             if (vis_clicks.indexOf(i) > -1) {
                 vis_hits += 1;
             } else {
@@ -464,7 +486,7 @@ function calculateScore() {
                 vis_wrong += 1;
             }
         }
-        if (letter_stack[i] == letter_stack[i-N]) {
+        if (letter_is_target) {
             if (letter_clicks.indexOf(i) > -1) {
                 letter_hits += 1;
             } else {
@@ -477,14 +499,15 @@ function calculateScore() {
         }
     }
 
+    // 6 targets and (length - 6) non-targets per channel, per Blacker et al 2017.
     let hit_rate = (vis_hits/6.0 + letter_hits/6.0)/2.0;
-    let false_alarm_rate = (vis_wrong/(vis_stack.length-6) + letter_wrong/(vis_stack.length - 6))/2.0;
-    d_prime = hit_rate - false_alarm_rate;
+    let false_alarm_rate = (vis_wrong/(vis_stack.length-6) + letter_wrong/(letter_stack.length-6))/2.0;
+    sensitivity = hit_rate - false_alarm_rate;
 
-    if (d_prime > 0.85) {
+    if (sensitivity > 0.85) {
         _paq.push(['trackEvent', 'Game', 'Win', N]);
         return 1;
-    } else if (d_prime < 0.7) {
+    } else if (sensitivity < 0.7) {
         _paq.push(['trackEvent', 'Game', 'Lose', N]);
         return -1;
     } else {
