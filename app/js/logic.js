@@ -175,8 +175,10 @@ function init_home() {
 
 function goto_home() {
     hide_menu();
-    if (myInterval > 0)
+    if (myInterval > 0) {
         clearInterval(myInterval);
+        myInterval = 0;
+    }
     if(! document.getElementById('thescreen').contentWindow.location.href.endsWith('/screens/home.html')) {
         document.getElementById('thescreen').contentWindow.location.replace('/screens/home.html');
         document.getElementById('thescreen').onload = function (e) { init_home(); }
@@ -535,6 +537,7 @@ function doTimestep() {
     } else {
         setActiveBox(-1);
         clearInterval(myInterval);
+        myInterval = 0;
         updateStats();
         N = Math.max(1, N+calculateScore());
         localStorage.setItem("N", N);

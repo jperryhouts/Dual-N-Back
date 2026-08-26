@@ -131,9 +131,10 @@ test.describe('Keyboard shortcuts', () => {
     const screenFrame = await startGame(page);
 
     // goto_home() clears the interval and (via hide_menu) removes the keydown
-    // listeners. Note it does NOT reset myInterval, so wait on the home screen.
+    // listeners.
     await page.evaluate(() => window.goto_home());
     await screenFrame.locator('[id="#gear"]').waitFor({ state: 'attached' });
+    expect(await page.evaluate(() => window.myInterval)).toBe(0);
 
     const before = await clicks(page);
     await page.keyboard.press('a');
