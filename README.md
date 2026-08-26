@@ -8,9 +8,18 @@ Based on the task originally proposed by [1], and adapted by [2]. Dual N-Back ha
 ## Instructions
 The goal of each level is to remember the state of the game exactly N timesteps ago.
 
-The game board is a set of eight squares. They will flash in a random order, at three seconds intervals. When you recognize that the same square flashed exactly N steps ago, you press the   button.
+The game board is a set of eight squares. They will flash in a random order, at three seconds intervals. When you recognize that the same square flashed exactly N steps ago, you press the **eye** <img src='app/img/eye.svg?raw=true' height=14px /> button on the left.
 
-Simultaneously, one letter is spoken at each time step. When you recognize that the same letter was spoken exactly N steps ago, you press the   button.
+Simultaneously, one letter is spoken at each time step. When you recognize that the same letter was spoken exactly N steps ago, you press the **speaker** <img src='app/img/speaker.svg?raw=true' height=14px /> button on the right.
+
+### Keyboard shortcuts
+Both buttons can be triggered from the keyboard. The keys are arranged in pairs, so the entire game can be played with a single hand:
+
+| Layout | Visual match (eye) | Audio match (speaker) |
+|---|---|---|
+| Either hand | <kbd>a</kbd> | <kbd>;</kbd> |
+| Left hand only | <kbd>d</kbd> | <kbd>f</kbd> |
+| Right hand only | <kbd>j</kbd> | <kbd>k</kbd> |
 
 <img src='app/img/example.png?raw=true' width=500px />
 **Example sequence for N=2 game.** The player must remember the state of the game board N steps ago. If you do well, N will increase on the next round. If you don't do so well, N will decrease on the next round (down to N=1). There are 20+N time steps in each round.
