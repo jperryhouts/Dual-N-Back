@@ -22,7 +22,8 @@ Both buttons can be triggered from the keyboard. The keys are arranged in pairs,
 | Right hand only | <kbd>j</kbd> | <kbd>k</kbd> |
 
 <img src='app/img/example.png?raw=true' width=500px />
-**Example sequence for N=2 game.** The player must remember the state of the game board N steps ago. If you do well, N will increase on the next round. If you don't do so well, N will decrease on the next round (down to N=1). There are 20+N time steps in each round.
+
+**Example sequence for N\=2 game.** The player must remember the state of the game board N steps ago. If you do well, N will increase on the next round. If you don't do so well, N will decrease on the next round (down to N=1). There are 20+N time steps in each round.
 
 ## Credits:
 Based on the work of [1], [2], and others. Audio clips adapted from [5], most of the icons are from [6].
