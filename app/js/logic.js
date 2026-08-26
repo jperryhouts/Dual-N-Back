@@ -333,13 +333,32 @@ function goto_config() {
     }
 }
 
+// Tapping the greyed-out backdrop dismisses the menu, the same as the back
+// triangle inside it. Routed through go_back() rather than hide_menu() so the
+// history entry pushed when the menu opened gets popped too — otherwise the
+// browser back button would afterwards appear to do nothing.
+function shaderPress(e) {
+    // On touch devices clickEvnt is "touchstart", and the browser will
+    // synthesise a click ~300ms later at the same coordinates. By then the
+    // backdrop has stopped accepting pointer events, so that click would land
+    // on whatever sits beneath it — including the play button, which would
+    // start a game. Suppressing the default event prevents that.
+    if (e.cancelable) e.preventDefault();
+    go_back();
+}
+
 function show_menu() {
     document.getElementById('shader').style.opacity = '0.5';
+    // Only accept taps while the menu is actually open; the backdrop covers the
+    // whole viewport and sits above the play button, so leaving it live would
+    // swallow every tap on the game.
+    document.getElementById('shader').style.pointerEvents = 'auto';
     document.getElementById('themenu').style.width = '60%';
 }
 
 function hide_menu() {
     document.getElementById('shader').style.opacity = '0';
+    document.getElementById('shader').style.pointerEvents = 'none';
     document.getElementById('themenu').style.width = '0';
     window.removeEventListener("keydown", gameKeypress);
     try {
@@ -683,6 +702,11 @@ window.addEventListener("load", function() {
             N = 1;
         }
     }
+
+    // The backdrop lives in the parent frame and is never reloaded, so this is
+    // attached once. Not via replaceEventListener(), which clones the node.
+    // Explicitly non-passive so shaderPress() can call preventDefault().
+    document.getElementById('shader').addEventListener(clickEvnt, shaderPress, false);
 
     window.history.pushState({'page':'home'}, '', '');
     goto_home();
